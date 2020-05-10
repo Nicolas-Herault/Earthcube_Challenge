@@ -7,7 +7,7 @@
 arch_config = {
     'num_pooling' : 4, # Define the number of pooling operations in your network
     'num_layers_before_pooling': 2, # Define the numbers of convolutions in your block before a pool
-    'block_type' : 'standard', # Define the type of block, for now can be 'classic' or 'resnet'
+    'block_type' : 'classic', # Define the type of block, for now can be 'classic' or 'resnet'
     'train_padding': 'same',
     'predict_padding' : None, # Not implemented yet
     'batch_normalization': True,
@@ -56,7 +56,7 @@ train_config = {
     'early_stopping_verbose': 1,
     'nb_samples_to_predict' : 30,
     'mode': 'train and predict', # Can be 'train', 'predict' or 'train and predict'
-    'pretrained' : True,
+    'pretrained' : False,
     'checkpoint' : 'unet_membrane.hdf5',
 }
  

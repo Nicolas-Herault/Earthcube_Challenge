@@ -16,15 +16,14 @@ class Trainer():
         self.early_stopping = self._init_early_stopping()
 
     def __str__(self): 
-        title = 'Training settings  :' + '\..........:  ' + str(train_config['nb_epochs']) + '\n' + '\n'
+        title = 'Training settings  :' + '\n' + '\n'
         
         net               = 'Net................................:  ' + model_config['net'] + '\n' 
         optimizer         = 'Optimizer..........................:  ' + model_config['optimizer'] + '\n'
         scheduler         = 'Learning Rate Scheduler............:  ' + model_config['scheduler'] + '\n'
-        nb_epochs         = 'Number of epochs...................:  ' + train_config['nb_epochs'] + '\n'
-        steps_per_epoch   = 'Number of steps_per_epoch..........:  ' + train_config['steps_per_epoch'] + '\n'
-        model_summary =  + net + optimizern + scheduler + nb_epochs + steps_per_epoch + '\n'
-        return (80*'_' + '\n' + title + model_summary + 80*'_')
+        nb_epochs         = 'Number of epochs...................:  ' + str(train_config['nb_epochs']) + '\n'
+        steps_per_epoch   = 'Number of steps_per_epoch..........:  ' + str(train_config['steps_per_epoch']) + '\n'
+        return (80*'_' + '\n' + title + net + optimizer + scheduler + nb_epochs + steps_per_epoch + '\n' + 80*'_')
     
     def _init_early_stopping(self):
         if train_config['use_early_stopping'] :

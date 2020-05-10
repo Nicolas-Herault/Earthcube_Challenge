@@ -4,11 +4,13 @@ import os
 import skimage.io as io
 import skimage.transform as trans
 import numpy as np 
-from keras.models import UpSampling2D, Dropout
-from keras.layers import *
-from keras import backend as keras
+import tensorflow
+from tensorflow.keras.layers import *
+from tensorflow.keras.models import Model
 
-from block import classicBlock
+from tensorflow.keras import backend as keras
+
+from block import classicBlock, resnetBlock
 
 """ 
 This class is the architecture of the Unet.
@@ -42,7 +44,7 @@ def unet(pretrained_weights = None, input_size = (256,256,1)):
     out = Conv2D(2, 3, activation = 'relu', padding = arch_config['train_padding'], kernel_initializer = 'he_normal')(out)
     out = Conv2D(1, 1, activation = 'sigmoid')(out)
 
-    model = Model(input = inputs, output = out)
+    model = tensorflow.keras.Model(inputs=inputs, outputs=out)
 
     if pretrained_weights is not None :
         model.load_weights(self.pretrained_weights)
@@ -55,11 +57,13 @@ def unet(pretrained_weights = None, input_size = (256,256,1)):
 
 def PoolBlock(inputs, pooling_index, padding, block, num_layers_before_pooling, batch_normalization, conv_list):
     
+    out = inputs 
+    
     if block == 'classic':
-        out = classicBlock(inputs = inputs, size = 64*(2**pooling_index), padding = padding,
+        out = classicBlock(inputs = out, size = 64*(2**pooling_index), padding = padding,
                         num_layers_before_pooling = num_layers_before_pooling, batch_normalization = batch_normalization).call()
     elif block == 'resnet':
-        out = resnetBlock(inputs = inputs, size = 64*(2**pooling_index), padding = padding,
+        out = resnetBlock(inputs = out, size = 64*(2**pooling_index), padding = padding,
                         num_layers_before_pooling = num_layers_before_pooling).call()
 
     conv_list.append(out)
@@ -87,12 +91,14 @@ def UpBlock(out, up_index, padding, block, num_layers_before_pooling, batch_norm
 def ExtensionBlock(inputs, padding, block, num_layers_before_pooling, batch_normalization):
     
     num_pooling = arch_config['num_pooling']
-
+    
+    out = inputs
+    
     if block == 'classic':
-        out = classicBlock(inputs = inputs, size = 64*(2**num_pooling), padding = padding,
+        out = classicBlock(inputs = out, size = 64*(2**num_pooling), padding = padding,
                         num_layers_before_pooling = num_layers_before_pooling, batch_normalization = batch_normalization).call()
     elif block == 'resnet':
-        out = resnetBlock(inputs = inputs, size = 64*(2**num_pooling), padding = padding,
+        out = resnetBlock(inputs = out, size = 64*(2**num_pooling), padding = padding,
                         num_layers_before_pooling = num_layers_before_pooling).call()
 
     drop1 = Dropout(0.5)(out)

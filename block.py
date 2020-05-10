@@ -1,5 +1,5 @@
-from keras.layers import *
-from keras import layers
+from tensorflow.keras.layers import *
+from tensorflow.keras import layers
 
 
 """ 
@@ -39,6 +39,7 @@ class resnetBlock():
         x = Conv2D(self.size, 3, padding = self.padding, kernel_initializer = 'he_normal')(self.inputs)
         x = BatchNormalization()(x)
         x = Activation('relu')(x)
-     x = Add(self.inputs, x)
-     x = Activation('relu')(x)
+        
+    x = Add(self.inputs, x)
+    x = Activation('relu')(x)
     return x

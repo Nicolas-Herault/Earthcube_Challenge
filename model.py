@@ -3,8 +3,8 @@ from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 from tensorflow.keras.losses import Reduction 
 from tensorflow.keras.losses import BinaryCrossentropy
-from keras.models import *
-from keras.optimizers import *
+from tensorflow.keras.models import *
+from tensorflow.keras.optimizers import *
 
 from unet import *
 
